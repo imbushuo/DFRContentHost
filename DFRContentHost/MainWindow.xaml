@@ -1,0 +1,11 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="2170" d:DesignHeight="60"
+        x:Class="DFRContentHost.MainWindow"
+        Title="DFRContentHost" Background="Black" Width="2170" Height="60" SizeToContent="WidthAndHeight">
+  <Grid Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <TextBlock Foreground="White">Welcome to Avalonia!</TextBlock>
+  </Grid>
+</Window>
