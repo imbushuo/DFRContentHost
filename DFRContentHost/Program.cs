@@ -1,6 +1,9 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using Avalonia.DfrFrameBuffer;
+using Avalonia.Controls;
+using Avalonia.Media;
 
 namespace DFRContentHost
 {
@@ -9,19 +12,38 @@ namespace DFRContentHost
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
-        public static void Main(string[] args) => BuildAvaloniaApp().Start(AppMain, args);
+        public static void Main(string[] args)
+        {
+            AppBuilder.Configure<App>().InitializeWithBridgeFramebuffer(tl =>
+            {
+                var grid = new Grid();
+                grid.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                grid.Children.Add(new MainView());
+                tl.Content = grid;
+                tl.Width = 1085;
+                tl.Height = 30;
+                System.Threading.ThreadPool.QueueUserWorkItem(_ => ConsoleSilencer());
+            });
+        }
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+                .With(new Win32PlatformOptions
+                {
+                    AllowEglInitialization = true
+                })
+                .UseSkia()
                 .LogToDebug();
 
-        // Your application's entry point. Here you can initialize your MVVM framework, DI
-        // container, etc.
-        private static void AppMain(Application app, string[] args)
+        static void ConsoleSilencer()
         {
-            app.Run(new MainWindow());
+            Console.CursorVisible = false;
+            while (true)
+            {
+                Console.ReadKey(true);
+            }
         }
     }
 }

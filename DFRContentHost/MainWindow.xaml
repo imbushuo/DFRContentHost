@@ -4,8 +4,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="2170" d:DesignHeight="60"
         x:Class="DFRContentHost.MainWindow"
-        Title="DFRContentHost" Background="Black" Width="2170" Height="60" SizeToContent="WidthAndHeight">
-  <Grid Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-    <TextBlock Foreground="White">Welcome to Avalonia!</TextBlock>
+        Title="Touch Bar Content Host" Background="Black" WindowState="Normal" CanResize="False">
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="120" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="600" />
+    </Grid.ColumnDefinitions>
+    <!-- Esc Key -->
+    <Grid Grid.Column="0">
+      <Button FontSize="18" Width="100">Esc</Button>
+    </Grid>
   </Grid>
 </Window>
