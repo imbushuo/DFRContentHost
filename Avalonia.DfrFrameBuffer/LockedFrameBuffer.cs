@@ -4,29 +4,29 @@ using Avalonia.Platform;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 
 namespace Avalonia.DfrFrameBuffer
 {
-    [StructLayout(LayoutKind.Sequential)]
-    struct PixelColor
-    {
-        public byte Blue;
-        public byte Green;
-        public byte Red;
-        public byte Alpha;
-    }
-
     unsafe class LockedFrameBuffer : ILockedFramebuffer
     {
         private IntPtr _deviceHandle;
+        private int _bufferSize;
 
         public LockedFrameBuffer(IntPtr instance, Vector dpi)
         {
+            // Check CPU capability
+            if (!Sse2.IsSupported || !Ssse3.IsSupported || !Avx2.IsSupported)
+            {
+                throw new Exception("Outdated CPU detected");
+            }
+
             _deviceHandle = instance;
             Dpi = dpi;
 
             // Do double buffering because the driver has not yet implemented mmap
-            Address = Marshal.AllocHGlobal(RowBytes * 60);
+            _bufferSize = RowBytes * 60;
+            Address = Marshal.AllocHGlobal(_bufferSize);
         }
 
         public IntPtr Address { get; private set; }
@@ -37,22 +37,22 @@ namespace Avalonia.DfrFrameBuffer
 
         public Vector Dpi { get; }
 
-        public PixelFormat Format => PixelFormat.Bgra8888;
+        public PixelFormat Format => PixelFormat.Rgba8888;
 
         unsafe void VSync()
         {
-            // Do transfer here
             int requestSize = 2170 * 60 * 3 + Marshal.SizeOf(typeof(DFR_HOSTIO_UPDATE_FRAMEBUFFER_HEADER));
-            IntPtr requestPtr = Marshal.AllocHGlobal(requestSize);
-            if (requestPtr == IntPtr.Zero)
+            IntPtr RequestMemory = Marshal.AllocHGlobal(requestSize);
+            if (RequestMemory == IntPtr.Zero)
             {
                 throw new Exception("Failed to allocate memory for FrameBuffer");
             }
 
-            byte* requestBytePtr = (byte*) requestPtr.ToPointer();
-            PixelColor* content = (PixelColor*) Address.ToPointer();
-            UnmanagedMemoryStream requestStream = new UnmanagedMemoryStream(requestBytePtr, requestSize, requestSize, FileAccess.Write);
+            byte* pRequest = (byte*) RequestMemory.ToPointer();
+            byte* pFbContent = (byte*)Address.ToPointer();
 
+            NativeMethods.ZeroMemory(pRequest, requestSize);
+            UnmanagedMemoryStream requestStream = new UnmanagedMemoryStream(pRequest, requestSize, requestSize, FileAccess.Write);
             using (var binaryWriter = new BinaryWriter(requestStream))
             {
                 binaryWriter.Write((ushort) 0);
@@ -60,30 +60,25 @@ namespace Avalonia.DfrFrameBuffer
                 binaryWriter.Write((ushort) 2170);
                 binaryWriter.Write((ushort) 60);
                 binaryWriter.Write(DfrHostIo.DFR_FRAMEBUFFER_FORMAT);
-                binaryWriter.Write((uint)0);
+                binaryWriter.Write((uint) 0);
+                binaryWriter.Flush();
 
                 for (int w = 0; w < 2170; w++)
                 {
                     for (int h = 59; h >= 0; h--)
                     {
-                        int offset = 2170 * h + w;
-
-                        byte b = content[offset].Blue;
-                        byte g = content[offset].Green;
-                        byte r = content[offset].Red;
-
-                        binaryWriter.Write(r);
-                        binaryWriter.Write(g);
-                        binaryWriter.Write(b);
+                        byte* p = pFbContent + (2170 * h + w) * 4;
+                        binaryWriter.Write(*p);
+                        binaryWriter.Write(*(p + 1));
+                        binaryWriter.Write(*(p + 2));
                     }
                 }
 
                 binaryWriter.Flush();
-
                 NativeMethods.DeviceIoControl(
                     _deviceHandle,
                     DfrHostIo.IOCTL_DFR_UPDATE_FRAMEBUFFER,
-                    requestPtr,
+                    RequestMemory,
                     requestSize,
                     IntPtr.Zero,
                     0,
@@ -93,7 +88,7 @@ namespace Avalonia.DfrFrameBuffer
 
             }
 
-            Marshal.FreeHGlobal(requestPtr);
+            Marshal.FreeHGlobal(RequestMemory);
         }
 
         public void Dispose()

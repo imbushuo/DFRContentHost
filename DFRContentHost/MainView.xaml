@@ -2,7 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1085" d:DesignHeight="30" Background="Black"
              x:Class="DFRContentHost.MainView">
-    Welcome to Avalonia!
+  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="70" />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Button Grid.Column="0" Margin="5,2" Width="60">Esc</Button>
+    <StackPanel Grid.Column="1" Margin="5,2">
+      <Slider Width="200" />
+    </StackPanel>
+  </Grid>
 </UserControl>

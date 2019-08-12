@@ -17,7 +17,7 @@ namespace DFRContentHost
             AppBuilder.Configure<App>().InitializeWithBridgeFramebuffer(tl =>
             {
                 var grid = new Grid();
-                grid.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                grid.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
                 grid.Children.Add(new MainView());
                 tl.Content = grid;
                 tl.Width = 1085;
@@ -40,10 +40,7 @@ namespace DFRContentHost
         static void ConsoleSilencer()
         {
             Console.CursorVisible = false;
-            while (true)
-            {
-                Console.ReadKey(true);
-            }
+            Console.ReadLine();
         }
     }
 }

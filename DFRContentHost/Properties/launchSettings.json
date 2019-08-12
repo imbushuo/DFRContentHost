@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DFRContentHost": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
