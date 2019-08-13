@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
 using Avalonia.Rendering;
+using System.Diagnostics;
 
 namespace Avalonia.DfrFrameBuffer
 {
@@ -14,6 +15,9 @@ namespace Avalonia.DfrFrameBuffer
 
         public static FramebufferToplevelImpl TopLevel;
         public static InternalPlatformThreadingInterface Threading;
+
+        private static readonly Stopwatch m_st = Stopwatch.StartNew();
+        internal static uint Timestamp => (uint) m_st.ElapsedTicks;
 
         public static MouseDevice MouseDevice = new MouseDevice();
 

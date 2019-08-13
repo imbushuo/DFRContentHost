@@ -17,7 +17,10 @@ namespace Avalonia.DfrFrameBuffer
         public FramebufferToplevelImpl(BridgeFrameBuffer fb)
         {
             _fb = fb;
-            Invalidate(default(Rect));
+            Invalidate(default);
+            var digiziter = new Digitizer(ClientSize.Width, ClientSize.Height);
+            digiziter.Start();
+            digiziter.Event += e => Input?.Invoke(e);
         }
 
         public IRenderer CreateRenderer(IRenderRoot root)
@@ -30,7 +33,6 @@ namespace Avalonia.DfrFrameBuffer
             throw new NotSupportedException();
         }
 
-        
         public void Invalidate(Rect rect)
         {
             if(_renderQueued)

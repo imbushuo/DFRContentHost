@@ -22,7 +22,6 @@ namespace DFRContentHost
                 tl.Content = grid;
                 tl.Width = 1085;
                 tl.Height = 30;
-                System.Threading.ThreadPool.QueueUserWorkItem(_ => ConsoleSilencer());
             });
         }
 
@@ -36,11 +35,5 @@ namespace DFRContentHost
                 })
                 .UseSkia()
                 .LogToDebug();
-
-        static void ConsoleSilencer()
-        {
-            Console.CursorVisible = false;
-            Console.ReadLine();
-        }
     }
 }

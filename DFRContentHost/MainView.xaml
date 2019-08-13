@@ -10,9 +10,6 @@
       <ColumnDefinition />
       <ColumnDefinition />
     </Grid.ColumnDefinitions>
-    <Button Grid.Column="0" Margin="5,2" Width="60">Esc</Button>
-    <StackPanel Grid.Column="1" Margin="5,2">
-      <Slider Width="200" />
-    </StackPanel>
+    <Button Grid.Column="0" Margin="5,2" Width="60" Click="OnEscClicked">Esc</Button>
   </Grid>
 </UserControl>
