@@ -50,9 +50,8 @@ namespace Avalonia.DfrFrameBuffer
             {
                 _hidDeviceInputReceiver = _reportDescr.CreateHidDeviceInputReceiver();
                 _hiddeviceInputParser = _reportDescr.DeviceItems[0].CreateDeviceItemInputParser();
+                _hidDeviceInputReceiver.Received += OnDigitizerInputReceived;
                 _hidDeviceInputReceiver.Start(_hidStream);
-
-                ThreadPool.QueueUserWorkItem(_ => Worker(), null);
             }
             else
             {
@@ -60,32 +59,31 @@ namespace Avalonia.DfrFrameBuffer
             }
         }
 
-        private void Worker()
+        private void OnDigitizerInputReceived(object? sender, EventArgs e)
         {
             var inputReportBuffer = new byte[_digitizer.GetMaxInputReportLength()];
-
-            while (true)
+            while (_hidDeviceInputReceiver.TryRead(inputReportBuffer, 0, out Report report))
             {
-                if (!_hidDeviceInputReceiver.IsRunning) { break; } // Disconnected?
-                while (_hidDeviceInputReceiver.TryRead(inputReportBuffer, 0, out Report report))
+                // Parse the report if possible.
+                // This will return false if (for example) the report applies to a different DeviceItem.
+                if (_hiddeviceInputParser.TryParseReport(inputReportBuffer, 0, report))
                 {
-                    // Parse the report if possible.
-                    // This will return false if (for example) the report applies to a different DeviceItem.
-                    if (_hiddeviceInputParser.TryParseReport(inputReportBuffer, 0, report))
-                    {
-                        BridgeFrameBufferPlatform.Threading.Send(() => ProcessEvent(report));
-                    }
+                    BridgeFrameBufferPlatform.Threading.Send(() => ProcessEvent(report));
                 }
             }
         }
 
         private void ProcessEvent(Report report)
         {
+            var flagged = false;
+
             while (_hiddeviceInputParser.HasChanged)
             {
                 int changedIndex = _hiddeviceInputParser.GetNextChangedIndex();
                 var previousDataValue = _hiddeviceInputParser.GetPreviousValue(changedIndex);
                 var dataValue = _hiddeviceInputParser.GetValue(changedIndex);
+
+                if (flagged) continue;
 
                 if ((Usage) dataValue.Usages.FirstOrDefault() == Usage.GenericDesktopX)
                 {
@@ -104,6 +102,8 @@ namespace Avalonia.DfrFrameBuffer
                         RawMouseEventType.LeftButtonUp,
                         new Point(x, 15),
                         default));
+
+                    flagged = false;
                 }
             }
         }

@@ -8,8 +8,21 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="70" />
       <ColumnDefinition />
-      <ColumnDefinition />
+      <ColumnDefinition Width="240" />
     </Grid.ColumnDefinitions>
-    <Button Grid.Column="0" Margin="5,2" Width="60" Click="OnEscClicked">Esc</Button>
+    <Button Grid.Column="0" Margin="5,1" Width="60" Click="OnEscClicked"
+            FontWeight="SemiBold"
+            BorderThickness="0" Background="#FF292827" Foreground="White">Esc</Button>
+    <StackPanel Grid.Column="2" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button Margin="0.5, 1" Width="60" Click="OnPlaybackClicked"
+            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+            Background="#FF292827" Foreground="White"></Button>
+      <Button Margin="0.5, 1" Width="60" Click="OnVolumeClicked"
+            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+            Background="#FF292827" Foreground="White"></Button>
+      <Button Margin="0.5, 1" Width="60" Click="OnLockClicked"
+            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+            Background="#FF292827" Foreground="White"></Button>
+    </StackPanel>
   </Grid>
 </UserControl>

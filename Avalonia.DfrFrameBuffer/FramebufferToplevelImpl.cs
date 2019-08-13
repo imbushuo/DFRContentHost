@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Rendering;
 using Avalonia.Threading;
+using System;
+using System.Collections.Generic;
 
 namespace Avalonia.DfrFrameBuffer
 {
@@ -35,12 +35,11 @@ namespace Avalonia.DfrFrameBuffer
 
         public void Invalidate(Rect rect)
         {
-            if(_renderQueued)
-                return;
+            if(_renderQueued) return;
             _renderQueued = true;
             Dispatcher.UIThread.Post(() =>
             {
-                Paint?.Invoke(new Rect(default(Point), ClientSize));
+                Paint?.Invoke(new Rect(default, ClientSize));
                 _renderQueued = false;
             });
         }
