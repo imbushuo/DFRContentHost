@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.8.2" />
     <PackageReference Include="Avalonia.Desktop" Version="0.8.2" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.2" />
     <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
   </ItemGroup>
   <ItemGroup>

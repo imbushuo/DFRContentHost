@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1085" d:DesignHeight="30" Background="Black"
+             xmlns:models="clr-namespace:DFRContentHost.Models"
              x:Class="DFRContentHost.MainView">
   <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid.ColumnDefinitions>
@@ -13,6 +14,20 @@
     <Button Grid.Column="0" Margin="5,1" Width="60" Click="OnEscClicked"
             FontWeight="SemiBold"
             BorderThickness="0" Background="#FF292827" Foreground="White">Esc</Button>
+    <ItemsControl Grid.Column="1" Margin="5,1" Items="{Binding FnKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel Margin="0" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="models:FunctionRowButtonModel">
+          <Button Margin="0.5,0" Width="60" Height="29" FontWeight="SemiBold"
+                  BorderThickness="0" Background="#FF292827"
+                  Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
     <StackPanel Grid.Column="2" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
       <Button Margin="0.5, 1" Width="60" Click="OnPlaybackClicked"
             FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"

@@ -59,7 +59,7 @@ namespace Avalonia.DfrFrameBuffer
             }
         }
 
-        private void OnDigitizerInputReceived(object? sender, EventArgs e)
+        private void OnDigitizerInputReceived(object sender, EventArgs e)
         {
             var inputReportBuffer = new byte[_digitizer.GetMaxInputReportLength()];
             while (_hidDeviceInputReceiver.TryRead(inputReportBuffer, 0, out Report report))

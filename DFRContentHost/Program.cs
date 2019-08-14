@@ -14,7 +14,7 @@ namespace DFRContentHost
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            AppBuilder.Configure<App>().InitializeWithBridgeFramebuffer(tl =>
+            AppBuilder.Configure<App>().UseReactiveUI().InitializeWithBridgeFramebuffer(tl =>
             {
                 var grid = new Grid();
                 grid.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
@@ -34,6 +34,7 @@ namespace DFRContentHost
                     AllowEglInitialization = true
                 })
                 .UseSkia()
+                .UseReactiveUI()
                 .LogToDebug();
     }
 }

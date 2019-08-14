@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
+using DFRContentHost.ViewModels;
 using System.Runtime.InteropServices;
 using WindowsInput;
 using WindowsInput.Native;
@@ -17,6 +17,7 @@ namespace DFRContentHost
         {
             this.InitializeComponent();
             inputSimulator = new InputSimulator();
+            this.DataContext = new MainViewModel();
         }
 
         private void InitializeComponent()
