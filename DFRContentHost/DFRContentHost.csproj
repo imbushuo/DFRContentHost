@@ -22,6 +22,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.8.2" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.2" />
     <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
+    <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainView.xaml">
@@ -30,5 +32,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Avalonia.DfrFrameBuffer\Avalonia.DfrFrameBuffer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Windows">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.17763.0\Windows.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
   </ItemGroup>
 </Project>

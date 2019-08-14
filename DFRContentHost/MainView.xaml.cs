@@ -1,9 +1,8 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using DFRContentHost.Interop;
 using DFRContentHost.ViewModels;
-using System.Runtime.InteropServices;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -11,7 +10,7 @@ namespace DFRContentHost
 {
     public class MainView : UserControl
     {
-        InputSimulator inputSimulator;
+        private InputSimulator inputSimulator;
 
         public MainView()
         {
@@ -30,22 +29,9 @@ namespace DFRContentHost
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.ESCAPE);
         }
 
-        [DllImport("user32")]
-        public static extern void LockWorkStation();
-
         private void OnLockClicked(object sender, RoutedEventArgs e)
         {
-            LockWorkStation();
-        }
-
-        private void OnVolumeClicked(object sender, RoutedEventArgs e)
-        {
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.VOLUME_UP);
-        }
-
-        private void OnPlaybackClicked(object sender, RoutedEventArgs e)
-        {
-            inputSimulator.Keyboard.KeyPress(VirtualKeyCode.MEDIA_PLAY_PAUSE);
+            NativeMethods.LockWorkStation();
         }
     }
 }

@@ -9,7 +9,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="70" />
       <ColumnDefinition />
-      <ColumnDefinition Width="240" />
+      <ColumnDefinition Width="220" />
     </Grid.ColumnDefinitions>
     <Button Grid.Column="0" Margin="5,1" Width="60" Click="OnEscClicked"
             FontWeight="SemiBold"
@@ -22,21 +22,26 @@
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="models:FunctionRowButtonModel">
-          <Button Margin="0.5,0" Width="60" Height="29" FontWeight="SemiBold"
+          <Button Margin="2,0" Width="60" Height="29" FontWeight="SemiBold"
                   BorderThickness="0" Background="#FF292827"
                   Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
     <StackPanel Grid.Column="2" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
-      <Button Margin="0.5, 1" Width="60" Click="OnPlaybackClicked"
-            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
-            Background="#FF292827" Foreground="White"></Button>
-      <Button Margin="0.5, 1" Width="60" Click="OnVolumeClicked"
-            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
-            Background="#FF292827" Foreground="White"></Button>
+      <Grid Margin="10, 1" MaxWidth="120">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="30" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Height="30" Margin="5, 0" Source="{Binding MediaThumbnail}" />
+        <StackPanel Grid.Column="1">
+          <TextBlock Foreground="White" FontSize="11" FontWeight="SemiBold" Text="{Binding MediaTitle}" />
+          <TextBlock Foreground="White" FontSize="8" Text="{Binding MediaArtist}" />
+        </StackPanel>
+      </Grid>
       <Button Margin="0.5, 1" Width="60" Click="OnLockClicked"
-            FontWeight="SemiBold" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+            BorderThickness="0" FontFamily="Segoe MDL2 Assets"
             Background="#FF292827" Foreground="White"></Button>
     </StackPanel>
   </Grid>
