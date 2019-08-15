@@ -11,10 +11,13 @@
       <ColumnDefinition />
       <ColumnDefinition Width="220" />
     </Grid.ColumnDefinitions>
-    <Button Grid.Column="0" Margin="5,1" Width="60" Click="OnEscClicked"
-            FontWeight="SemiBold"
-            BorderThickness="0" Background="#FF292827" Foreground="White">Esc</Button>
-    <ItemsControl Grid.Column="1" Margin="5,1" Items="{Binding FnKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+    <Border Grid.Column="0" Margin="5,1" Width="60" 
+            Background="#FF292827" CornerRadius="4">
+      <Button Grid.Column="0" Margin="5,1" Width="50" Click="OnEscClicked"
+          FontWeight="SemiBold" BorderThickness="0"
+          Background="#FF292827" Foreground="White" Content="Esc" />
+    </Border>
+    <ItemsControl Grid.Column="1" Margin="5,0" Items="{Binding FnKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <WrapPanel Margin="0" />
@@ -22,13 +25,15 @@
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="models:FunctionRowButtonModel">
-          <Button Margin="2,0" Width="60" Height="29" FontWeight="SemiBold"
-                  BorderThickness="0" Background="#FF292827"
-                  Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
+          <Border Margin="2.5,1" Width="60" Background="#FF292827" CornerRadius="4">
+            <Button Width="50" Height="28" FontWeight="SemiBold"
+                    BorderThickness="0" Background="#FF292827"
+                    Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
+          </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
-    <StackPanel Grid.Column="2" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Right">
+    <StackPanel Grid.Column="2" Margin="5,0" Height="30" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Stretch">
       <Grid Margin="10, 1" MaxWidth="120">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="30" />
@@ -40,9 +45,11 @@
           <TextBlock Foreground="White" FontSize="8" Text="{Binding MediaArtist}" />
         </StackPanel>
       </Grid>
-      <Button Margin="0.5, 1" Width="60" Click="OnLockClicked"
-            BorderThickness="0" FontFamily="Segoe MDL2 Assets"
-            Background="#FF292827" Foreground="White"></Button>
+      <Border Margin="0.5, 1" Width="60" Background="#FF292827" CornerRadius="4">
+        <Button Width="50" Click="OnLockClicked"
+              BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+              Background="#FF292827" Foreground="White"></Button>
+      </Border>
     </StackPanel>
   </Grid>
 </UserControl>
