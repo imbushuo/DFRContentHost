@@ -62,19 +62,31 @@ namespace DFRContentHost.ViewModels
         private async void InitializeSmtcAsync()
         {
             _glbSmtcMgr = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
-            _glbSmtcSession = _glbSmtcMgr.GetCurrentSession();
-            _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
-            _glbSmtcMgr.CurrentSessionChanged += OnSmtcSessionChanged;
 
-            await LoadMediaPropertiesAsync();
+            _glbSmtcSession = _glbSmtcMgr.GetCurrentSession();
+            if (_glbSmtcSession != null)
+            {
+                _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
+                await LoadMediaPropertiesAsync();
+            }
+
+            _glbSmtcMgr.CurrentSessionChanged += OnSmtcSessionChanged;
         }
 
-        private void OnSmtcSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, 
+        private async void OnSmtcSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, 
             CurrentSessionChangedEventArgs args)
         {
-            _glbSmtcSession.MediaPropertiesChanged -= OnMediaPropertiesChanged;
+            if (_glbSmtcSession != null)
+            {
+                _glbSmtcSession.MediaPropertiesChanged -= OnMediaPropertiesChanged;
+            }
+            
             _glbSmtcSession = _glbSmtcMgr.GetCurrentSession();
-            _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
+            if (_glbSmtcSession != null)
+            {
+                _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
+                await LoadMediaPropertiesAsync();
+            }
         }
 
         private async void OnMediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
