@@ -1,5 +1,6 @@
 ﻿using Avalonia.Threading;
 using ReactiveUI;
+using System;
 using System.Reactive;
 using WindowsInput;
 using WindowsInput.Native;
@@ -27,8 +28,15 @@ namespace DFRContentHost.Models
 
         private void SendKeyItem()
         {
-            var sim = new InputSimulator();
-            sim.Keyboard.KeyPress(_keyCode);
+            try
+            {
+                var sim = new InputSimulator();
+                sim.Keyboard.KeyPress(_keyCode);
+            }
+            catch (Exception)
+            {
+                // ULPI issue
+            }
         }
 
         public FunctionRowButtonModel() { }
