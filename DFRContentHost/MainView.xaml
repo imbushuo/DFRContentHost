@@ -9,16 +9,16 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="70" />
       <ColumnDefinition />
-      <ColumnDefinition Width="220" />
     </Grid.ColumnDefinitions>
-    <Border Grid.Column="0" Margin="5,1" Width="60" 
-            Background="#FF292827" CornerRadius="4">
+    <!-- Esc button is always shown -->
+    <Border Grid.Column="0" Margin="5,1" Width="60" Background="#FF292827" CornerRadius="4">
       <Button Grid.Column="0" Margin="5,1" Width="50" Click="OnEscClicked"
           FontWeight="SemiBold" BorderThickness="0"
           Background="#FF292827" Foreground="White" Content="Esc" />
     </Border>
-    <ItemsControl Grid.Column="1" Margin="5,0" Items="{Binding FnKeys}" IsVisible="{Binding FnVisible}"
-                  VerticalAlignment="Stretch" HorizontalAlignment="Left">
+    <!-- Fn keys -->
+    <ItemsControl Grid.Column="1" Margin="5,0" Items="{Binding FnKeyViewModel.FnKeys}" IsVisible="{Binding FnKeyViewModel.FnVisible}"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Center">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <WrapPanel Margin="0" />
@@ -26,31 +26,40 @@
       </ItemsControl.ItemsPanel>
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="models:FunctionRowButtonModel">
-          <Border Margin="2.5,1" Width="60" Background="#FF292827" CornerRadius="4">
-            <Button Width="50" Height="28" FontWeight="SemiBold"
+          <Border Margin="2.5,1" Width="75" Background="#FF292827" CornerRadius="4">
+            <Button Width="65" Height="28" FontWeight="SemiBold"
                     BorderThickness="0" Background="#FF292827"
                     Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
           </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
-    <StackPanel Grid.Column="2" Margin="5,0" Height="30" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-      <Grid Margin="10, 1" MaxWidth="120">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="30" />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Image Grid.Column="0" Height="30" Margin="5, 0" Source="{Binding MediaThumbnail}" />
-        <StackPanel Grid.Column="1">
-          <TextBlock Foreground="White" FontSize="11" FontWeight="SemiBold" Text="{Binding MediaTitle}" />
-          <TextBlock Foreground="White" FontSize="8" Text="{Binding MediaArtist}" />
-        </StackPanel>
-      </Grid>
-      <Border Margin="0.5, 1" Width="60" Background="#FF292827" CornerRadius="4">
+    <!-- Dynamic layout -->
+    <Grid Grid.Column="1" Margin="5,0" Height="30" IsVisible="{Binding !FnKeyViewModel.FnVisible}" 
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="60" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0" Margin="5,0" Height="30" Orientation="Horizontal" DataContext="{Binding SmtcViewModel}"
+                HorizontalAlignment="Left" VerticalAlignment="Stretch">
+        <Grid Margin="10, 1" MaxWidth="600">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Image Grid.Column="0" Height="30" Margin="5, 0" Source="{Binding MediaThumbnail}" />
+          <StackPanel Grid.Column="1">
+            <TextBlock Foreground="White" FontSize="11" FontWeight="SemiBold" Text="{Binding MediaTitle}" />
+            <TextBlock Foreground="White" FontSize="8" Text="{Binding MediaArtist}" />
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+      <Border Grid.Column="1" Margin="0.5, 1" Width="60" Background="#FF292827" CornerRadius="4">
         <Button Width="50" Click="OnLockClicked"
               BorderThickness="0" FontFamily="Segoe MDL2 Assets"
               Background="#FF292827" Foreground="White"></Button>
       </Border>
-    </StackPanel>
+    </Grid>
   </Grid>
 </UserControl>
