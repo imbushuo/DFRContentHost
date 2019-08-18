@@ -42,11 +42,15 @@ namespace DFRContentHost.ViewModels
 
         public SystemMediaTransportControlViewModel()
         {
+            ResetSmtc();
+            InitializeSmtcAsync();
+        }
+
+        private void ResetSmtc()
+        {
             ThumbnailAvailable = false;
             MediaTitle = string.Empty;
             MediaArtist = string.Empty;
-
-            InitializeSmtcAsync();
         }
 
         private async void InitializeSmtcAsync()
@@ -76,6 +80,10 @@ namespace DFRContentHost.ViewModels
             {
                 _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
                 await LoadMediaPropertiesAsync();
+            }
+            else
+            {
+                ResetSmtc();
             }
         }
 
