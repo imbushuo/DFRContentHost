@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
     <ApplicationManifest>application.manifest</ApplicationManifest>
-    <UseAppHost>false</UseAppHost>
-    <PackageId>Touch Bar Content Host</PackageId>
+    <PackageId>DFRContentHost</PackageId>
     <Version>1.0.0</Version>
     <Authors>Bingxing Wang</Authors>
     <Product>Touch Bar Content Host</Product>
