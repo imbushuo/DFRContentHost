@@ -39,12 +39,15 @@ namespace Avalonia.DfrFrameBuffer
 
         public void PollNextFnStatus()
         {
-            var ioCtlResult = true;
-            
-            while (ioCtlResult)
+            while (true)
             {
-                ioCtlResult = DfrHostIo.GetNextFnKeyStatus(_fd, out bool pressed);
+                var ioCtlResult = DfrHostIo.GetNextFnKeyStatus(_fd, out bool pressed);
                 BridgeFrameBufferPlatform.Threading.Send(() => ProcessEvent(pressed));
+
+                if (!ioCtlResult)
+                {
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
             }
         }
 
