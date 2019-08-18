@@ -34,8 +34,5 @@ namespace Avalonia.DfrFrameBuffer.Interop
 
         [DllImport("kernel32.dll", EntryPoint = "RtlZeroMemory")]
         public unsafe static extern bool ZeroMemory(byte* destination, int length);
-
-        [DllImport(@"C:\Users\ben\Source\Repos\DFRContentHost\x64\Debug\DfrKmBridge.dll")]
-        public unsafe static extern void DfrKmBridgeTranslateBuffer(byte* FrameBufferRgba, byte* FrameBufferRgb, ulong FrameBufferSize);
     }
 }

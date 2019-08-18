@@ -20,6 +20,7 @@ namespace Avalonia.DfrFrameBuffer
         internal static uint Timestamp => (uint) m_st.ElapsedTicks;
 
         public static MouseDevice MouseDevice = new MouseDevice();
+        public static KeyboardDevice KbdDevice = new KeyboardDevice();
 
         BridgeFrameBufferPlatform()
         {

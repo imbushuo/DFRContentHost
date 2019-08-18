@@ -7,6 +7,9 @@ using DFRContentHost.Models;
 using ReactiveUI;
 using Avalonia.Media.Imaging;
 using System.Threading.Tasks;
+using Avalonia.DfrFrameBuffer;
+using Avalonia.Input.Raw;
+using Avalonia.Input;
 
 namespace DFRContentHost.ViewModels
 {
@@ -14,6 +17,8 @@ namespace DFRContentHost.ViewModels
     {
         private GlobalSystemMediaTransportControlsSession _glbSmtcSession;
         private GlobalSystemMediaTransportControlsSessionManager _glbSmtcMgr;
+
+        private FnKeyNotifier _fnKeyNotifier;
 
         public ObservableCollection<FunctionRowButtonModel> FnKeys { get; }
 
@@ -38,8 +43,16 @@ namespace DFRContentHost.ViewModels
             set => this.RaiseAndSetIfChanged(ref _bitmap, value);
         }
 
+        private bool _fnVisible;
+        public bool FnVisible
+        {
+            get => _fnVisible;
+            set => this.RaiseAndSetIfChanged(ref _fnVisible, value);
+        }
+
         public MainViewModel()
         {
+            FnVisible = false;
             FnKeys = new ObservableCollection<FunctionRowButtonModel>
             {
                 new FunctionRowButtonModel("F1", VirtualKeyCode.F1),
@@ -56,7 +69,21 @@ namespace DFRContentHost.ViewModels
                 new FunctionRowButtonModel("F12", VirtualKeyCode.F12)
             };
 
+            _fnKeyNotifier = new FnKeyNotifier();
+            _fnKeyNotifier.Event += OnFnKeyStateChanged;
+
             InitializeSmtcAsync();
+        }
+
+        private void OnFnKeyStateChanged(RawInputEventArgs obj)
+        {
+            var args = (RawKeyEventArgs) obj;
+            if (args.Key == Key.F23)
+            {
+                FnVisible = args.Type == RawKeyEventType.KeyDown;
+            }
+
+            obj.Handled = true;
         }
 
         private async void InitializeSmtcAsync()

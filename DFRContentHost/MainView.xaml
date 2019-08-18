@@ -17,7 +17,8 @@
           FontWeight="SemiBold" BorderThickness="0"
           Background="#FF292827" Foreground="White" Content="Esc" />
     </Border>
-    <ItemsControl Grid.Column="1" Margin="5,0" Items="{Binding FnKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+    <ItemsControl Grid.Column="1" Margin="5,0" Items="{Binding FnKeys}" IsVisible="{Binding FnVisible}"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Left">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <WrapPanel Margin="0" />
