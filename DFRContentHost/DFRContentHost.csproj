@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
-    <ApplicationManifest>application.manifest</ApplicationManifest>
     <PackageId>DFRContentHost</PackageId>
     <Version>1.0.0</Version>
     <Authors>Bingxing Wang</Authors>
@@ -10,6 +9,10 @@
     <Description>Touch Bar Content Host Application</Description>
     <Copyright>Copyright (c) 2019 Bingxing Wang</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <ApplicationManifest>application.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
