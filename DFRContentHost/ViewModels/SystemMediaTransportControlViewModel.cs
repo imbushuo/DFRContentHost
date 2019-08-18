@@ -33,8 +33,19 @@ namespace DFRContentHost.ViewModels
             set => this.RaiseAndSetIfChanged(ref _bitmap, value);
         }
 
+        private bool _thumbnailAvailable;
+        public bool ThumbnailAvailable
+        {
+            get => _thumbnailAvailable;
+            set => this.RaiseAndSetIfChanged(ref _thumbnailAvailable, value);
+        }
+
         public SystemMediaTransportControlViewModel()
         {
+            ThumbnailAvailable = false;
+            MediaTitle = string.Empty;
+            MediaArtist = string.Empty;
+
             InitializeSmtcAsync();
         }
 
@@ -88,6 +99,12 @@ namespace DFRContentHost.ViewModels
                     {
                         MediaThumbnail = new Bitmap(thumbnailStream);
                     }
+
+                    ThumbnailAvailable = true;
+                }
+                else
+                {
+                    ThumbnailAvailable = false;
                 }
             }
             catch (Exception)

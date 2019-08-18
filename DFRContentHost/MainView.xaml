@@ -48,7 +48,7 @@
             <ColumnDefinition Width="30" />
             <ColumnDefinition />
           </Grid.ColumnDefinitions>
-          <Image Grid.Column="0" Height="30" Margin="5, 0" Source="{Binding MediaThumbnail}" />
+          <Image Grid.Column="0" Height="30" Margin="5, 0" IsVisible="{Binding ThumbnailAvailable}" Source="{Binding MediaThumbnail}" />
           <StackPanel Grid.Column="1">
             <TextBlock Foreground="White" FontSize="11" FontWeight="SemiBold" Text="{Binding MediaTitle}" />
             <TextBlock Foreground="White" FontSize="8" Text="{Binding MediaArtist}" />
