@@ -2,6 +2,7 @@
   "profiles": {
     "DFRContentHost": {
       "commandName": "Project",
+      "commandLineArgs": "--self-host",
       "nativeDebugging": true
     }
   }

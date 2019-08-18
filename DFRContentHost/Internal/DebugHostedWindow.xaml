@@ -1,0 +1,11 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dfrhost="clr-namespace:DFRContentHost"
+        mc:Ignorable="d" d:DesignWidth="1085" d:DesignHeight="30"
+        x:Class="DFRContentHost.Internal.DebugHostedWindow"
+        Title="DFR Debug Hosted Window" Width="1085" Height="30" 
+        WindowState="Normal" CanResize="False" Background="Black">
+  <dfrhost:MainView />
+</Window>

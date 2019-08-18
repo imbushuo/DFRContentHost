@@ -42,7 +42,7 @@ namespace Avalonia.DfrFrameBuffer
             while (true)
             {
                 var ioCtlResult = DfrHostIo.GetNextFnKeyStatus(_fd, out bool pressed);
-                BridgeFrameBufferPlatform.Threading.Send(() => ProcessEvent(pressed));
+                BridgeFrameBufferPlatform.Threading?.Send(() => ProcessEvent(pressed));
 
                 if (!ioCtlResult)
                 {
