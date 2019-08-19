@@ -38,6 +38,8 @@ namespace Avalonia.DfrFrameBuffer
             // Should this changes, issue an IOCTL to retrieve device spec in the future.
         }
 
+        public Vector Dpi => _dpi;
+
         public ILockedFramebuffer Lock() => new LockedFrameBuffer(_fd, _dpi);
 
         #region IDisposable Support

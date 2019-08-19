@@ -10,6 +10,7 @@
     <Copyright>Copyright (c) 2019 Bingxing Wang</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <ApplicationManifest>application.manifest</ApplicationManifest>

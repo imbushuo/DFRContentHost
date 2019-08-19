@@ -18,7 +18,7 @@ namespace Avalonia.DfrFrameBuffer
         {
             _fb = fb;
             Invalidate(default);
-            var digiziter = new Digitizer(ClientSize.Width, ClientSize.Height);
+            var digiziter = new Digitizer(ClientSize.Width, ClientSize.Height, fb.Dpi);
             digiziter.Start();
             digiziter.Event += e => Input?.Invoke(e);
         }
