@@ -1,6 +1,7 @@
 ﻿using Avalonia.DfrFrameBuffer;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Threading;
 using DFRContentHost.Models;
 using ReactiveUI;
 using System.Collections.ObjectModel;
@@ -39,7 +40,7 @@ namespace DFRContentHost.ViewModels
                 new FunctionRowButtonModel("F12", VirtualKeyCode.F12)
             };
 
-            _fnKeyNotifier = new FnKeyNotifier();
+            _fnKeyNotifier = new FnKeyNotifier(Dispatcher.UIThread);
             _fnKeyNotifier.Event += OnFnKeyStateChanged;
         }
 

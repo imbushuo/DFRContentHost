@@ -2,6 +2,7 @@
 using Avalonia.DfrFrameBuffer.Interop;
 using Avalonia.Input;
 using Avalonia.Input.Raw;
+using Avalonia.Threading;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -12,16 +13,19 @@ namespace Avalonia.DfrFrameBuffer
     public class FnKeyNotifier
     {
         private IntPtr _fd;
+        private Dispatcher _dispatcher;
 
         public event Action<RawInputEventArgs> Event;
 
-        public FnKeyNotifier()
+        public FnKeyNotifier(Dispatcher dispatcher)
         {
             var instancePath = Locator.FindDfrDevice();
             if (instancePath == null)
             {
                 throw new Exception("DFR Display Device not found");
             }
+
+            _dispatcher = dispatcher;
 
             _fd = NativeMethods.CreateFile(
                 instancePath, FileAccess.ReadWrite, FileShare.None,
@@ -42,7 +46,7 @@ namespace Avalonia.DfrFrameBuffer
             while (true)
             {
                 var ioCtlResult = DfrHostIo.GetNextFnKeyStatus(_fd, out bool pressed);
-                BridgeFrameBufferPlatform.Threading?.Send(() => ProcessEvent(pressed));
+                _dispatcher?.InvokeAsync(() => ProcessEvent(pressed), DispatcherPriority.Input);
 
                 if (!ioCtlResult)
                 {
