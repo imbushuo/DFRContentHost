@@ -4,6 +4,7 @@ using Avalonia.Input.Raw;
 using Avalonia.Threading;
 using DFRContentHost.Models;
 using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
 using WindowsInput.Native;
 
@@ -13,6 +14,7 @@ namespace DFRContentHost.ViewModels
     {
         public ObservableCollection<FunctionRowButtonModel> FnKeys { get; }
         private FnKeyNotifier _fnKeyNotifier;
+        private DateTime _lastFnPressedTime;
 
         private bool _fnVisible;
         public bool FnVisible
@@ -23,6 +25,8 @@ namespace DFRContentHost.ViewModels
 
         public FunctionRowButtonCollectionViewModel()
         {
+            _lastFnPressedTime = DateTime.MinValue;
+
             FnVisible = false;
             FnKeys = new ObservableCollection<FunctionRowButtonModel>
             {
@@ -47,9 +51,15 @@ namespace DFRContentHost.ViewModels
         private void OnFnKeyStateChanged(RawInputEventArgs obj)
         {
             var args = (RawKeyEventArgs) obj;
+
             if (args.Key == Key.F23 && args.Type == RawKeyEventType.KeyDown)
             {
-                FnVisible = !FnVisible;
+                if (DateTime.Now.Subtract(_lastFnPressedTime) < TimeSpan.FromMilliseconds(200))
+                {
+                    FnVisible = !FnVisible;
+                }
+
+                _lastFnPressedTime = DateTime.Now;
             }
 
             obj.Handled = true;
