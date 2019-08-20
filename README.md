@@ -2,7 +2,7 @@
 
 This application implements the user-mode host application for [DFRDisplayKm](https://github.com/imbushuo/DFRDisplayKm).
 
-![High Level Overview Topology](docs/DFR High Level Topology.jpg)
+![High Level Overview Topology](docs/DFR%20High%20Level%20Topology.jpg)
 
 # License
 
