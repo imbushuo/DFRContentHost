@@ -39,10 +39,10 @@
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
       <Grid.ColumnDefinitions>
         <ColumnDefinition />
-        <ColumnDefinition Width="300" />
+        <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <StackPanel Grid.Column="0" Margin="5,0" Height="30" Orientation="Horizontal" DataContext="{Binding SmtcViewModel}"
-                HorizontalAlignment="Left" VerticalAlignment="Stretch">
+      <StackPanel Grid.Column="0" Margin="5,0" Height="30" Orientation="Horizontal" IsVisible="{Binding IsSmtcActive}"
+                  DataContext="{Binding SmtcViewModel}" HorizontalAlignment="Left" VerticalAlignment="Stretch">
         <Grid Margin="10, 1" MaxWidth="600">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
@@ -56,6 +56,23 @@
         </Grid>
       </StackPanel>
       <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+        <ItemsControl Margin="0" Items="{Binding SmtcViewModel.PlayControlKeys}" IsVisible="{Binding SmtcViewModel.IsSmtcActive}"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Left">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Margin="0" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="models:FunctionRowButtonModel">
+              <Border Margin="1" Width="60" Background="#FF292827" CornerRadius="4">
+                <Button Width="50" Height="28" BorderThickness="0" FontFamily="Segoe MDL2 Assets" IsEnabled="{Binding Enabled}"
+                      Background="#FF292827" Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border Margin="0.5, 1" Width="10" />
         <ItemsControl Margin="0" Items="{Binding SmtcViewModel.VolumeKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -64,8 +81,8 @@
           </ItemsControl.ItemsPanel>
           <ItemsControl.ItemTemplate>
             <DataTemplate DataType="models:FunctionRowButtonModel">
-              <Border Margin="0.5,1" Width="60" Background="#FF292827" CornerRadius="4">
-                <Button Width="50" Height="28" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+              <Border Margin="1" Width="60" Background="#FF292827" CornerRadius="4">
+                <Button Width="50" Height="28" BorderThickness="0" FontFamily="Segoe MDL2 Assets" IsEnabled="{Binding Enabled}"
                       Background="#FF292827" Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
               </Border>
             </DataTemplate>

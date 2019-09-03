@@ -15,6 +15,8 @@ namespace DFRContentHost.ViewModels
         private GlobalSystemMediaTransportControlsSession _glbSmtcSession;
         private GlobalSystemMediaTransportControlsSessionManager _glbSmtcMgr;
 
+        private FunctionRowButtonModel _playPauseButton;
+
         private string _mediaTitle;
         public string MediaTitle
         {
@@ -43,10 +45,30 @@ namespace DFRContentHost.ViewModels
             set => this.RaiseAndSetIfChanged(ref _thumbnailAvailable, value);
         }
 
+        private bool _isSmtcActive;
+        public bool IsSmtcActive
+        {
+            get => _isSmtcActive;
+            set => this.RaiseAndSetIfChanged(ref _isSmtcActive, value);
+        }
+
         public ObservableCollection<FunctionRowButtonModel> VolumeKeys { get; }
+        public ObservableCollection<FunctionRowButtonModel> PlayControlKeys { get; }
 
         public SystemMediaTransportControlViewModel()
         {
+            _playPauseButton = new FunctionRowButtonModel("\uE102", VirtualKeyCode.MEDIA_PLAY_PAUSE)
+            {
+                Enabled = false
+            };
+
+            PlayControlKeys = new ObservableCollection<FunctionRowButtonModel>
+            {
+                new FunctionRowButtonModel("\uE100", VirtualKeyCode.MEDIA_PREV_TRACK),
+                _playPauseButton,
+                new FunctionRowButtonModel("\uE101", VirtualKeyCode.MEDIA_NEXT_TRACK)
+            };
+
             VolumeKeys = new ObservableCollection<FunctionRowButtonModel>
             {
                 new FunctionRowButtonModel("\uE74F", VirtualKeyCode.VOLUME_MUTE),
@@ -60,7 +82,9 @@ namespace DFRContentHost.ViewModels
 
         private void ResetSmtc()
         {
+            _playPauseButton.Enabled = false;
             ThumbnailAvailable = false;
+            IsSmtcActive = false;
             MediaTitle = string.Empty;
             MediaArtist = string.Empty;
         }
@@ -73,7 +97,10 @@ namespace DFRContentHost.ViewModels
             if (_glbSmtcSession != null)
             {
                 _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
+                _glbSmtcSession.PlaybackInfoChanged += OnPlaybackInfoChanged;
                 await LoadMediaPropertiesAsync();
+                UpdatePlayButtonStatus();
+                IsSmtcActive = true;
             }
 
             _glbSmtcMgr.CurrentSessionChanged += OnSmtcSessionChanged;
@@ -85,13 +112,17 @@ namespace DFRContentHost.ViewModels
             if (_glbSmtcSession != null)
             {
                 _glbSmtcSession.MediaPropertiesChanged -= OnMediaPropertiesChanged;
+                _glbSmtcSession.PlaybackInfoChanged -= OnPlaybackInfoChanged;
             }
 
             _glbSmtcSession = _glbSmtcMgr.GetCurrentSession();
             if (_glbSmtcSession != null)
             {
                 _glbSmtcSession.MediaPropertiesChanged += OnMediaPropertiesChanged;
+                _glbSmtcSession.PlaybackInfoChanged += OnPlaybackInfoChanged;
                 await LoadMediaPropertiesAsync();
+                UpdatePlayButtonStatus();
+                IsSmtcActive = true;
             }
             else
             {
@@ -99,9 +130,43 @@ namespace DFRContentHost.ViewModels
             }
         }
 
+        private void OnPlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
+        {
+            UpdatePlayButtonStatus();
+        }
+
         private async void OnMediaPropertiesChanged(GlobalSystemMediaTransportControlsSession sender, MediaPropertiesChangedEventArgs args)
         {
             await LoadMediaPropertiesAsync();
+        }
+
+        private void UpdatePlayButtonStatus()
+        {
+            if (_glbSmtcSession == null) return;
+            try
+            {
+                var playbackInfo = _glbSmtcSession.GetPlaybackInfo();
+                switch (playbackInfo.PlaybackStatus)
+                {
+                    case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing:
+                        _playPauseButton.Enabled = true;
+                        _playPauseButton.Content = "\uE103";
+                        break;
+                    case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Paused:
+                    case GlobalSystemMediaTransportControlsSessionPlaybackStatus.Stopped:
+                        _playPauseButton.Enabled = true;
+                        _playPauseButton.Content = "\uE102";
+                        break;
+                    default:
+                        _playPauseButton.Enabled = false;
+                        _playPauseButton.Content = "\uE102";
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                // Do nothing
+            }
         }
 
         private async Task LoadMediaPropertiesAsync()

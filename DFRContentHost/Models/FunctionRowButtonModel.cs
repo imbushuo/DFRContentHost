@@ -9,6 +9,7 @@ namespace DFRContentHost.Models
 {
     public class FunctionRowButtonModel : ReactiveObject
     {
+        private bool _enabled;
         private string _keyContent;
         private VirtualKeyCode _keyCode;
 
@@ -22,6 +23,12 @@ namespace DFRContentHost.Models
         {
             get => _keyCode;
             set => this.RaiseAndSetIfChanged(ref _keyCode, value);
+        }
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set => this.RaiseAndSetIfChanged(ref _enabled, value);
         }
 
         public ReactiveCommand<Unit, Unit> KeyCommand => ReactiveCommand.Create(SendKeyItem);
@@ -42,6 +49,7 @@ namespace DFRContentHost.Models
         public FunctionRowButtonModel() { }
         public FunctionRowButtonModel(string content, VirtualKeyCode code)
         {
+            _enabled = true;
             _keyContent = content;
             _keyCode = code;
         }
