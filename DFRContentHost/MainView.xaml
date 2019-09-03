@@ -39,7 +39,7 @@
                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
       <Grid.ColumnDefinitions>
         <ColumnDefinition />
-        <ColumnDefinition Width="60" />
+        <ColumnDefinition Width="300" />
       </Grid.ColumnDefinitions>
       <StackPanel Grid.Column="0" Margin="5,0" Height="30" Orientation="Horizontal" DataContext="{Binding SmtcViewModel}"
                 HorizontalAlignment="Left" VerticalAlignment="Stretch">
@@ -55,11 +55,29 @@
           </StackPanel>
         </Grid>
       </StackPanel>
-      <Border Grid.Column="1" Margin="0.5, 1" Width="60" Background="#FF292827" CornerRadius="4">
-        <Button Width="50" Click="OnLockClicked"
-              BorderThickness="0" FontFamily="Segoe MDL2 Assets"
-              Background="#FF292827" Foreground="White"></Button>
-      </Border>
+      <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+        <ItemsControl Margin="0" Items="{Binding SmtcViewModel.VolumeKeys}" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Margin="0" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="models:FunctionRowButtonModel">
+              <Border Margin="0.5,1" Width="60" Background="#FF292827" CornerRadius="4">
+                <Button Width="50" Height="28" BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+                      Background="#FF292827" Foreground="White" Content="{Binding Content}" Command="{Binding KeyCommand}" />
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border Margin="0.5, 1" Width="10" />
+        <Border Margin="0.5, 1" Width="60" Background="#FF292827" CornerRadius="4">
+          <Button Width="50" Click="OnLockClicked"
+                BorderThickness="0" FontFamily="Segoe MDL2 Assets"
+                Background="#FF292827" Foreground="White">&#xE1F6;</Button>
+        </Border>
+      </StackPanel>
     </Grid>
   </Grid>
 </UserControl>

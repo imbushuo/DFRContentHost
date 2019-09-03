@@ -1,9 +1,12 @@
 ﻿using Avalonia.Media.Imaging;
+using DFRContentHost.Models;
 using ReactiveUI;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Media.Control;
+using WindowsInput.Native;
 
 namespace DFRContentHost.ViewModels
 {
@@ -40,8 +43,17 @@ namespace DFRContentHost.ViewModels
             set => this.RaiseAndSetIfChanged(ref _thumbnailAvailable, value);
         }
 
+        public ObservableCollection<FunctionRowButtonModel> VolumeKeys { get; }
+
         public SystemMediaTransportControlViewModel()
         {
+            VolumeKeys = new ObservableCollection<FunctionRowButtonModel>
+            {
+                new FunctionRowButtonModel("\uE74F", VirtualKeyCode.VOLUME_MUTE),
+                new FunctionRowButtonModel("\uE993", VirtualKeyCode.VOLUME_DOWN),
+                new FunctionRowButtonModel("\uE995", VirtualKeyCode.VOLUME_UP)
+            };
+
             ResetSmtc();
             InitializeSmtcAsync();
         }
